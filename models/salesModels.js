@@ -1,31 +1,39 @@
 const connection = require('./connection');
 
-const getAllSales = async() => {
+const getAllSales = async () => {
   const [sales] = await connection.execute(
-    'SELECT * FROM StoreManager.sales;',
-);
-return sales;
+    `SELECT sp.sale_id, sa.date, sp.product_id, sp.quantity
+    FROM StoreManager.sales AS sa
+    INNER JOIN sales_products AS sp
+    ON sa.id = sp.sale_id ORDER BY sp.product_id ;`,
+  );
+  return sales;
 }
-const getSalesById = async(id) => {
+const getSalesById = async (id) => {
   const [sales] = await connection.execute(
-    `SELECT * FROM StoreManager.sales
-    WHERE id=?;`,[id]
-);
-return sales;
+    `SELECT sa.date, sp.product_id, sp.quantity
+    FROM StoreManager.sales AS sa
+    INNER JOIN sales_products AS sp
+    ON sa.id = sp.sale_id
+    WHERE sp.sale_id =? ORDER BY sp.product_id;`, [id]
+  );
+
+
+  return sales;
 }
-const createSales = async() => {
+const createSale = async () => {
 
 }
-const updateSales = async(id) => {
+const updateSale = async (id) => {
 
 }
-const removeSales = async(id) => {
+const removeSale = async (id) => {
 
 }
 module.exports = {
   getAllSales,
   getSalesById,
-  createSales,
-  updateSales,
-  removeSales,
+  createSale,
+  updateSale,
+  removeSale,
 }

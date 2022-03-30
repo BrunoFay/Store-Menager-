@@ -1,19 +1,14 @@
 const express = require('express');
 const saleRouter = express.Router();
+const salesController = require('../controllers/salesControllers');
 
-saleRouter.get('/', (req, res) => {
-  res.status(200).json(recipes);
-}).post((req, res) => {
-  res.status(201).json(req.body);
-});
+saleRouter
+  .get('/', salesController.getAllSales)
+  .post(salesController.createSale);
 
-saleRouter.get('/:id', (req, res) => {
-
-}).put((req, res) => {
-
-}).delete((req, res) => {
-
-})
+saleRouter
+  .get('/:id', salesController.getSalesById)
+  .put(salesController.updateSale).delete(salesController.removeSale);
 
 
 module.exports = saleRouter;

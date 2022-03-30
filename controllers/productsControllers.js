@@ -1,10 +1,10 @@
-const productsService = require('../services/productsService');
+const productsService = require('../services/productsServices');
 
 const getAllProducts = async (req, res, next) => {
   try {
     const products = await productsService.getAllProducts();
     return res.status(200).json(products);
-    
+
   } catch (error) {
     next(error);
   }
@@ -14,15 +14,17 @@ const getProductsById = async (req, res, next) => {
   try {
     const { id } = req.params;
     const products = await productsService.getProductsById(id);
-    return res.status(200).json(products);
+    return res.status(products.status || 200).json(products.error || products);
   } catch (error) {
     next(error);
   }
 }
 
 const createProduct = async (req, res, next) => {
+  const { name, quantity } = req.body;
+  const productObj = { name, quantity };
   try {
-    const products = await productsService.createProduct(req.body);
+    const products = await productsService.createProduct(productObj);
     return products;
   } catch (error) {
     next(error);
@@ -33,7 +35,8 @@ const updateProduct = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { name, quantity } = req.body;
-    const products = await productsService.updateProduct(id, name, quantity);
+    const productObj = { name, quantity };
+    const products = await productsService.updateProduct(id, productObj);
     return products;
   } catch (error) {
     next(error);
@@ -42,7 +45,8 @@ const updateProduct = async (req, res, next) => {
 
 const removeProduct = async (req, res, next) => {
   try {
-    const products = await productsService.removeProduct(req.params.id);
+    const { id } = req.params;
+    const products = await productsService.removeProduct(id);
     return products;
   } catch (error) {
     next(error);

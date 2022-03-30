@@ -1,6 +1,6 @@
-const productsModel = require('../models/productsModel');
+const productsModel = require('../models/productsModels');
 
-const getAllProducts= async() => {
+const getAllProducts = async () => {
   try {
     const products = await productsModel.getAllProducts();
     return products;
@@ -8,15 +8,15 @@ const getAllProducts= async() => {
     throw error;
   }
 }
-const getProductById = async(id) => {
-  try {
-    const product = await productsModel.getProductById(id);
-    return product;
-  } catch (error) {
-    throw error;
+const getProductsById = async (id) => {
+  const product = await productsModel.getProductsById(id);
+  if (!product.length) {
+    return ({ error: { message: "Product not found" }, status: 404 });
   }
+  return product;
+
 }
-const createProduct = async(product) => {
+const createProduct = async (product) => {
   try {
     const newProduct = await productsModel.createProduct(product);
     return newProduct;
@@ -24,7 +24,7 @@ const createProduct = async(product) => {
     throw error;
   }
 }
-const updateProduct = async(id, product) => {
+const updateProduct = async (id, product) => {
   try {
     const updatedProduct = await productsModel.updateProduct(id, product);
     return updatedProduct;
@@ -32,7 +32,7 @@ const updateProduct = async(id, product) => {
     throw error;
   }
 }
-const removeProduct = async(id) => {
+const removeProduct = async (id) => {
   try {
     const removedProduct = await productsModel.removeProduct(id);
     return removedProduct;
@@ -42,7 +42,7 @@ const removeProduct = async(id) => {
 }
 module.exports = {
   getAllProducts,
-  getProductById,
+  getProductsById,
   createProduct,
   updateProduct,
   removeProduct,

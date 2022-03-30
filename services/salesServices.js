@@ -1,44 +1,32 @@
-const salesModel = require('../models/salesModel');
+const salesModel = require('../models/salesModels');
 
 const getAllSales = async () => {
-  try {
-    const sales = await salesModel.getAllSales();
-    return sales;
-  } catch (error) {
-    throw error;
-  }
+  const sales = await salesModel.getAllSales();
+  return sales;
+
 }
 const getSalesById = async (id) => {
-  try {
-    const sales = await salesModel.getSalesById(id);
-    return sales;
-  } catch (error) {
-    throw error;
+  const sales = await salesModel.getSalesById(id);
+  if (!sales.length) {
+    return ({ error: { message: "Sale not found" }, status: 404 });
   }
+  return sales;
+
 }
 const createSale = async (sale) => {
-  try {
-    const newSale = await salesModel.createSale(sale);
-    return newSale;
-  } catch (error) {
-    throw error;
-  }
+  const newSale = await salesModel.createSale(sale);
+  return newSale;
+
 }
 const updateSale = async (id, sale) => {
-  try {
-    const updatedSale = await salesModel.updateSale(id, sale);
-    return updatedSale;
-  } catch (error) {
-    throw error;
-  }
+  const updatedSale = await salesModel.updateSale(id, sale);
+  return updatedSale;
+
 }
 const removeSale = async (id) => {
-  try {
-    const removedSale = await salesModel.removeSale(id);
-    return removedSale;
-  } catch (error) {
-    throw error;
-  }
+  const removedSale = await salesModel.removeSale(id);
+  return removedSale;
+
 }
 module.exports = {
   getAllSales,

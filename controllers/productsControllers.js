@@ -24,7 +24,7 @@ const createProduct = async (req, res, next) => {
   const productObj = { name, quantity };
   try {
     const products = await productsService.createProduct(productObj);
-    return products;
+    return res.status(products.status || 201).json(products.error || products);
   } catch (error) {
     next(error);
   }

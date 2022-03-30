@@ -24,7 +24,7 @@ const getProductsById = async (id) => {
   return product;
 };
 const createProduct = async (product) => {
- const productInDb = await checkIfProductAlreadyExistsInDb(product.name);
+  const productInDb = await checkIfProductAlreadyExistsInDb(product.name);
   if (productInDb.error) return productInDb;
   const newProduct = await productsModel.createProduct(product);
   return newProduct;
@@ -39,11 +39,10 @@ const updateProduct = async (id, product) => {
 };
 const removeProduct = async (id) => {
   const productInDb = await checkIfProductIdExistInDb(id);
-  if (productInDb.error) {
+  if (productInDb) {
     return productInDb;
   }
-  const removedProduct = await productsModel.removeProduct(id);
-  return removedProduct;
+  await productsModel.removeProduct(id);
 };
 module.exports = {
   getAllProducts,

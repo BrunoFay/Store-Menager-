@@ -4,11 +4,10 @@ const getAllSales = async (req, res, next) => {
   try {
     const sales = await salesService.getAllSales();
     return res.status(200).json(sales);
-
   } catch (error) {
     next(error);
   }
-}
+};
 
 const getSalesById = async (req, res, next) => {
   try {
@@ -18,17 +17,17 @@ const getSalesById = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-}
+};
 
 const createSale = async (req, res, next) => {
   try {
-    const{ productId, quantity } = req.body;
+    const { productId, quantity } = req.body;
     const sales = await salesService.createSale(productId, quantity);
     return sales;
   } catch (error) {
     next(error);
   }
-}
+};
 
 const updateSale = async (req, res, next) => {
   try {
@@ -40,7 +39,7 @@ const updateSale = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-}
+};
 
 const removeSale = async (req, res, next) => {
   try {
@@ -50,7 +49,7 @@ const removeSale = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-}
+};
 
 module.exports = {
   getAllSales,
@@ -58,4 +57,4 @@ module.exports = {
   createSale,
   updateSale,
   removeSale,
-}
+};

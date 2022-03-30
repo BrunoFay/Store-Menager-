@@ -4,11 +4,10 @@ const getAllProducts = async (req, res, next) => {
   try {
     const products = await productsService.getAllProducts();
     return res.status(200).json(products);
-
   } catch (error) {
     next(error);
   }
-}
+};
 
 const getProductsById = async (req, res, next) => {
   try {
@@ -18,7 +17,7 @@ const getProductsById = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-}
+};
 
 const createProduct = async (req, res, next) => {
   const { name, quantity } = req.body;
@@ -29,7 +28,7 @@ const createProduct = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-}
+};
 
 const updateProduct = async (req, res, next) => {
   try {
@@ -41,7 +40,7 @@ const updateProduct = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-}
+};
 
 const removeProduct = async (req, res, next) => {
   try {
@@ -51,7 +50,7 @@ const removeProduct = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-}
+};
 
 module.exports = {
   getAllProducts,
@@ -59,4 +58,4 @@ module.exports = {
   createProduct,
   updateProduct,
   removeProduct,
-}
+};

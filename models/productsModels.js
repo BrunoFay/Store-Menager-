@@ -22,15 +22,18 @@ const getProductsByName = async (name) => {
   return product;
 };
 const createProduct = async (Product) => {
-const [newProduct] = await connection.execute(
+  const [newProduct] = await connection.execute(
     'INSERT INTO StoreManager.products (name, quantity) VALUES (?, ?);',
     [Product.name, Product.quantity],
   );
   return { id: newProduct.insertId, ...Product };
 };
 
-const updateProduct = async (id) => {
-
+const updateProduct = async (Product, id) => {
+  await connection.execute(
+    'UPDATE StoreManager.products SET name=?, quantity=? WHERE id=?;',
+    [Product.name, Product.quantity, id],
+  )
 };
 const removeProduct = async (id) => {
 

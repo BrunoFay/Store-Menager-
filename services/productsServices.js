@@ -1,11 +1,12 @@
 const productsModel = require('../models/productsModels');
 
-const checkIfProductExistsInDb = async (name) => {
+const checkIfProductAlreadyExistsInDb = async (name) => {
   const product = await productsModel.getProductsByName(name);
   if (!product.length) {
     return { error: { message: 'Product already exists' }, status: 409 };
   }
 };
+
 const getAllProducts = async () => {
   const products = await productsModel.getAllProducts();
   return products;
@@ -18,11 +19,15 @@ const getProductsById = async (id) => {
   return product;
 };
 const createProduct = async (product) => {
- await checkIfProductExistsInDb(product.name);
+ await checkIfProductAlreadyExistsInDb(product.name);
   const newProduct = await productsModel.createProduct(product);
   return newProduct;
 };
 const updateProduct = async (id, product) => {
+  const checkIfProductIdExistInDb = await getProductsById(id);
+  if (checkIfProductIdExistInDb.error) {
+    return checkIfProductIdExistInDb;
+  }
   const updatedProduct = await productsModel.updateProduct(id, product);
   return updatedProduct;
 };

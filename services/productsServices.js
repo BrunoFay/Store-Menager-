@@ -33,14 +33,13 @@ const checkIfProductIdExistInDb = async (id) => {
 const updateProduct = async (product, id) => {
   const productInDb = await checkIfProductIdExistInDb(id);
   if (productInDb) return productInDb;
-  const updatedProduct = await productsModel.updateProduct(product, id);
-  return updatedProduct;
+  await productsModel.updateProduct(product, id);
+  return { id:Number(id), ...product };
 };
 const removeProduct = async (id) => {
   const productInDb = await checkIfProductIdExistInDb(id);
   if (productInDb) return productInDb;
-  await productsModel.removeProduct(id);
-  return ({ status: 204 });
+  await productsModel.removeProduct(id);  
 };
 module.exports = {
   getAllProducts,

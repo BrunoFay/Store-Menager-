@@ -30,11 +30,10 @@ const createProduct = async (Product) => {
 };
 
 const updateProduct = async (Product, id) => {
- const [productEdited] = await connection.execute(
+ await connection.execute(
     'UPDATE StoreManager.products SET name=?, quantity=? WHERE id=?;',
     [Product.name, Product.quantity, id],
   );
-  return { id: productEdited.insertId, ...Product };
 };
 const removeProduct = async (id) => {
  await connection.execute(

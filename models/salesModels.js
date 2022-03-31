@@ -32,7 +32,12 @@ const createSale = async (newSaleToDb) => {
     [newSaleToDb.id, newSaleToDb.productId, newSaleToDb.quantity],
   );
 };
-const updateSale = async (id) => { };
+const updateSale = async (sales) => {
+  await connection.execute(
+    'UPDATE StoreManager.sales_products SET product_id = ?, quantity=? WHERE sale_id = ?;',
+     [sales.productId, sales.quantity, sales.id],
+  );
+ };
 
 module.exports = {
   getAllSales,

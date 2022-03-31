@@ -31,20 +31,8 @@ const createSale = async (req, res, next) => {
 const updateSale = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { productId, quantity } = req.body;
-    const saleObj = { productId, quantity };
-    const sales = await salesService.updateSale(id, saleObj);
-    return sales;
-  } catch (error) {
-    next(error);
-  }
-};
-
-const removeSale = async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const sales = await salesService.removeSale(id);
-    return sales;
+    const sales = await salesService.updateSale(id, req.body);
+    return res.status(201).json(sales);
   } catch (error) {
     next(error);
   }
@@ -55,5 +43,4 @@ module.exports = {
   getSalesById,
   createSale,
   updateSale,
-  removeSale,
-};
+ };

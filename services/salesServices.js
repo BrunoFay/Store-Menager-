@@ -21,18 +21,17 @@ const createSale = async (sales) => {
   return newSale;
 };
 
-const updateSale = async (id, sale) => {
-  const updatedSale = await salesModel.updateSale(id, sale);
+const updateSale = async (id, sales) => {
+  sales.forEach(async ({ productId, quantity }) => {
+    await salesModel.updateSale({ productId, quantity, id });
+  });
+  const updatedSale = { saleId: Number(id), itemUpdated: [...sales] };
   return updatedSale;
 };
-const removeSale = async (id) => {
-  const removedSale = await salesModel.removeSale(id);
-  return removedSale;
-};
+
 module.exports = {
   getAllSales,
   getSalesById,
   createSale,
   updateSale,
-  removeSale,
 };

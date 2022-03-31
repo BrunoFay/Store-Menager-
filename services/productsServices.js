@@ -9,7 +9,7 @@ const getProductsById = async (id) => {
   if (!product.length) {
     return ({ error: { message: 'Product not found' }, status: 404 });
   }
-  return product;
+  return product[0];
 };
 
 const checkIfProductAlreadyExistsInDb = async (name) => {
@@ -33,8 +33,8 @@ const checkIfProductIdExistInDb = async (id) => {
 const updateProduct = async (product, id) => {
   const productInDb = await checkIfProductIdExistInDb(id);
   if (productInDb) return productInDb;
-  await productsModel.updateProduct(product, id);
-  return { id: Number(id), ...product };
+  const productUpdated= await productsModel.updateProduct(product, id);
+  return productUpdated;
 };
 const removeProduct = async (id) => {
   const productInDb = await checkIfProductIdExistInDb(id);

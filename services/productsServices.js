@@ -34,7 +34,7 @@ const updateProduct = async (product, id) => {
   const productInDb = await checkIfProductIdExistInDb(id);
   if (productInDb) return productInDb;
   await productsModel.updateProduct(product, id);
-  return { id:Number(id), ...product };
+  return { id: Number(id), ...product };
 };
 const removeProduct = async (id) => {
   const productInDb = await checkIfProductIdExistInDb(id);

@@ -46,7 +46,7 @@ const removeProduct = async (req, res, next) => {
   try {
     const { id } = req.params;
     const products = await productsService.removeProduct(id);
-    if(products) return res.status(products.status).json(products.error);
+    if (products) return res.status(products.status).json(products.error);
     return res.status(204).end();
   } catch (error) {
     next(error);

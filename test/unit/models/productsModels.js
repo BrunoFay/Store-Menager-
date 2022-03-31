@@ -16,12 +16,12 @@ describe('verifica comportamentos na rota GET /products', () => {
     });
 
     it('retorna um array', async () => {
-      const response = await productsModel.getAll();
+      const response = await productsModel.getAllProducts();
       expect(response).to.be.an('array');
     })
 
     it('retorna um array vazio', async () => {
-      const response = await productsModel.getAll();
+      const response = await productsModel.getAllProducts();
       expect(response).to.be.empty;
     })
   })

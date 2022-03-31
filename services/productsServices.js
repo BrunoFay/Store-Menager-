@@ -1,6 +1,5 @@
 const productsModel = require('../models/productsModels');
 
-
 const getAllProducts = async () => {
   const products = await productsModel.getAllProducts();
   return products;
@@ -31,17 +30,17 @@ const checkIfProductIdExistInDb = async (id) => {
     return ({ error: { message: 'Product not found' }, status: 404 });
   }
 };
-const updateProduct = async (product,id) => {
+const updateProduct = async (product, id) => {
   const productInDb = await checkIfProductIdExistInDb(id);
   if (productInDb) return productInDb;
-  const updatedProduct = await productsModel.updateProduct(product,id);
+  const updatedProduct = await productsModel.updateProduct(product, id);
   return updatedProduct;
 };
 const removeProduct = async (id) => {
   const productInDb = await checkIfProductIdExistInDb(id);
   if (productInDb) return productInDb;
   await productsModel.removeProduct(id);
-  return ({status: 204 });
+  return ({ status: 204 });
 };
 module.exports = {
   getAllProducts,

@@ -11,8 +11,11 @@ const getSalesById = async (id) => {
   }
   return sales;
 };
-const createSale = async (sale) => {
-  const newSale = await salesModel.createSale(sale);
+const createSale = async (sales) => {
+  const saleId = await salesModel.createRegisterInTableSales();
+  const arrayWithSalesToDb = sales.map(item => [saleId, item.productId, item.quantity]);
+  console.log(arrayWithSalesToDb);
+  const newSale = await salesModel.createSale(arrayWithSalesToDb, sales);
   return newSale;
 };
 const updateSale = async (id, sale) => {

@@ -21,8 +21,7 @@ const getSalesById = async (req, res, next) => {
 
 const createSale = async (req, res, next) => {
   try {
-    const { productId, quantity } = req.body;
-    const sales = await salesService.createSale(productId, quantity);
+    const sales = await salesService.createSale(req.body);
     return sales;
   } catch (error) {
     next(error);

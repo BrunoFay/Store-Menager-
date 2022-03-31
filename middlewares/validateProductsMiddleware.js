@@ -1,5 +1,6 @@
 const validateProductMiddleware = (req, res, next) => {
   const { name, quantity } = req.body;
+  console.log(req.body);
   if (!name) return res.status(400).json({ message: '"name" is required' });
   if (!quantity) return res.status(400).json({ message: '"quantity" is required' });
   if (name.length < 5) {

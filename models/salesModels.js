@@ -20,19 +20,30 @@ const getSalesById = async (id) => {
 
   return sales;
 };
-const createSale = async () => {
-
+const createRegisterInTableSales=async()=>{
+  const [sales] = await connection.execute(
+    `INSERT INTO StoreManager.sales(date) VALUES (NOW());`
+  ) 
+return sales.insertId;
+}
+const createSale = async (newSaleToDb,newSaleObj) => {
+const [newSale] = await connection.execute(
+  `INSERT INTO StoreManager.sales_products (sale_id,product_id,quantity) VALUES (?);`,
+  [newSaleToDb],
+)
+const newSaleReply={
+  id: newSale.insertId,
+  itemsSold:newSaleObj
+}
+return newSaleReply;
 };
-const updateSale = async (id) => {
+const updateSale = async (id) => {}
 
-};
-const removeSale = async (id) => {
 
-};
 module.exports = {
   getAllSales,
   getSalesById,
   createSale,
   updateSale,
-  removeSale,
+  createRegisterInTableSales
 };

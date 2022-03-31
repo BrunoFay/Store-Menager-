@@ -11,13 +11,16 @@ const getSalesById = async (id) => {
   }
   return sales;
 };
+/* referencia para fazer o forEach https://github.com/tryber/sd-016-b-store-manager/pull/63/commits/ff331aaf7047905862871cbd6b0a1cdb6f5550cb */
 const createSale = async (sales) => {
   const saleId = await salesModel.createRegisterInTableSales();
-  const arrayWithSalesToDb = sales.map((item) => [saleId, item.productId, item.quantity]);
-  console.log(arrayWithSalesToDb);
-  const newSale = await salesModel.createSale(arrayWithSalesToDb, sales);
+  sales.forEach(async ({ productId, quantity }) => {
+    await salesModel.createSale({ id: saleId, productId, quantity });
+  });
+  const newSale = { id: saleId, itemsSold: [...sales] };
   return newSale;
 };
+
 const updateSale = async (id, sale) => {
   const updatedSale = await salesModel.updateSale(id, sale);
   return updatedSale;

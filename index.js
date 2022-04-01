@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 require('dotenv').config();
 const productRouter = require('./routes/productsRoute');
 const saleRouter = require('./routes/salesRoute');
+const handleErrorMiddleware = require('./middlewares/handleErrorMiddleware');
 
 const app = express();
 app.use(bodyParser.json());
@@ -14,7 +15,7 @@ app.get('/', (_request, response) => {
 
 app.use('/products', productRouter);
 app.use('/sales', saleRouter);
-
+app.use(handleErrorMiddleware);
 app.listen(process.env.PORT, () => {
   console.log(`Escutando na porta ${process.env.PORT}`);
 });

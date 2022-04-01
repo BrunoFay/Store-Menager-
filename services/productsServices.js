@@ -2,6 +2,7 @@ const productsModel = require('../models/productsModels');
 
 const getAllProducts = async () => {
   const products = await productsModel.getAllProducts();
+  console.log(products);
   return products;
 };
 const getProductsById = async (id) => {
@@ -22,6 +23,7 @@ const createProduct = async (product) => {
   const productInDb = await checkIfProductAlreadyExistsInDb(product.name);
   if (productInDb) return productInDb;
   const newProduct = await productsModel.createProduct(product);
+  console.log(newProduct);
   return newProduct;
 };
 const checkIfProductIdExistInDb = async (id) => {
@@ -33,7 +35,7 @@ const checkIfProductIdExistInDb = async (id) => {
 const updateProduct = async (product, id) => {
   const productInDb = await checkIfProductIdExistInDb(id);
   if (productInDb) return productInDb;
-  const productUpdated= await productsModel.updateProduct(product, id);
+  const productUpdated = await productsModel.updateProduct(product, id);
   return productUpdated;
 };
 const removeProduct = async (id) => {

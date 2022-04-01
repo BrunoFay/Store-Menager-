@@ -7,7 +7,6 @@ const getAllSales = async () => {
     INNER JOIN sales_products AS sp
     ON sa.id = sp.sale_id ORDER BY sp.product_id ;`,
   );
-  console.log(sales);
   return sales;
 };
 const getSalesById = async (id) => {
@@ -18,7 +17,6 @@ const getSalesById = async (id) => {
     ON sa.id = sp.sale_id
     WHERE sp.sale_id =? ORDER BY sp.product_id;`, [id],
   );
-  console.log(sales);
 
   return sales;
 };

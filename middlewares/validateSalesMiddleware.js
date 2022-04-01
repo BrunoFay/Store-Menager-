@@ -18,7 +18,6 @@ const checkErrorExistOnProductAndQuantity = (array) => {
 const validateSalesMiddleware = (req, res, next) => {
   const arrayProduct = req.body;
   const error = checkErrorExistOnProductAndQuantity(arrayProduct);
-  console.log(error);
   if (error) {
     const [status, message] = error;
     return res.status(status).json(message);

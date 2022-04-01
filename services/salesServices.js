@@ -2,25 +2,25 @@ const salesModel = require('../models/salesModels');
 
 const getAllSales = async () => {
   const sales = await salesModel.getAllSales();
-  const salesFormated=sales.map(sale=>({
-      saleId:sale.sale_id,
-      date:sale.date,
-      productId:sale.product_id,
-      quantity:sale.quantity
-  }))
+  const salesFormated = sales.map((sale) => ({
+      saleId: sale.sale_id,
+      date: sale.date,
+      productId: sale.product_id,
+      quantity: sale.quantity,
+  }));
   return salesFormated;
 };
 const getSalesById = async (id) => {
   const sales = await salesModel.getSalesById(id);
-  const salesFormated=sales.map(sale=>({
-    date:sale.date,
-    productId:sale.product_id,
-    quantity:sale.quantity
-}))
+  const salesFormated = sales.map((sale) => ({
+    date: sale.date,
+    productId: sale.product_id,
+    quantity: sale.quantity,
+}));
   if (!sales.length) {
     return ({ error: { message: 'Sale not found' }, status: 404 });
   }
-  return salesFormated
+  return salesFormated;
 };
 /* referencia para fazer o forEach https://github.com/tryber/sd-016-b-store-manager/pull/63/commits/ff331aaf7047905862871cbd6b0a1cdb6f5550cb */
 const createSale = async (sales) => {

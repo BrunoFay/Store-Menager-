@@ -3,8 +3,8 @@ const { expect } = require('chai');
 const connection = require('../../../models/connection');
 const salesModel = require('../../../models/salesModels');
 
-describe('verifica comportamentos na rota GET /sales', () => {
-  describe('verifica caso nao tenha vendas no banco de dados', async () => {
+describe('verifica comportamentos de sales na camada model', () => {
+  describe('verifica caso nao tenha sales no banco de dados', async () => {
 
     before(async () => {
       const mock = [[], [{}, {}]]
@@ -26,7 +26,7 @@ describe('verifica comportamentos na rota GET /sales', () => {
     })
   })
 
-  describe('verifica caso tenha vendas no banco de dados', async () => {
+  describe('verifica caso tenha sales no banco de dados', async () => {
     const salesMocked = [[
       {
         saleId: 1,

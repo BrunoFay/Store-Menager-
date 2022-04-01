@@ -3,7 +3,7 @@ const { expect } = require('chai');
 const connection = require('../../../models/connection');
 const productsModel = require('../../../models/productsModels');
 
-describe('verifica comportamentos na rota GET /products', () => {
+describe('verifica comportamentos produtos na camada model', () => {
   describe('verifica caso nao tenha produtos no banco de dados', async () => {
 
     before(async () => {

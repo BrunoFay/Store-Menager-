@@ -3,65 +3,65 @@ const { expect } = require('chai');
 const connection = require('../../../models/connection');
 const salesModel = require('../../../models/salesModels');
 
-/* describe('verifica comportamentos de sales na camada model', () => {
-  describe('verifica caso nao tenha sales no banco de dados',  () => {
 
-    before(async () => {
-      const mock = [[], [{}, {}]]
-      sinon.stub(connection, 'execute').resolves(mock)
-    });
 
-    after(async () => {
-      connection.execute.restore();
-    });
+describe('verifica caso nao tenha sales no banco de dados',  () => {
 
-    it('retorna um array', async () => {
-      const response = await salesModel.getAllSales();
-      expect(response).to.be.an('array');
-    })
+  before(async () => {
+    const mock = [[], [{}, {}]]
+    sinon.stub(connection, 'execute').resolves(mock)
+  });
 
-    it('retorna um array vazio', async () => {
-      const response = await salesModel.getAllSales();
-      expect(response).to.be.empty;
-    })
+  after(async () => {
+    connection.execute.restore();
+  });
+
+  it('retorna um array', async () => {
+    const response = await salesModel.getAllSales();
+    expect(response).to.be.an('array');
   })
 
-  describe('verifica caso tenha sales no banco de dados',  () => {
-    const salesMocked = [
-      {
-        saleId: 1,
-        date: "2022-03-31T22:52:56.000Z",
-        productId: 3,
-        quantity: 15
-      },
-    ]
-
-    before(async () => {
-      const mock = [salesMocked, [{}, {}]]
-      sinon.stub(connection, 'execute').resolves(mock);
-    })
-
-    after(async () => {
-      connection.execute.restore();
-    })
-
-    it('retorna um array', async () => {
-      const response = await salesModel.getAllSales();
-      expect(response).to.be.an('array');
-    })
-
-    it('retorna um array não vazio', async () => {
-      const response = await salesModel.getAllSales();
-      expect(response).to.be.not.empty;
-    })
-
-    it('retorna um array com as chaves saleId date,name,quantity', async () => {
-      const [response] = await salesModel.getAllSales();
-      expect(response).to.have.keys(['date','saleId', 'name', 'quantity']);
-    })
+  it('retorna um array vazio', async () => {
+    const response = await salesModel.getAllSales();
+    expect(response).to.be.empty;
   })
 })
 
+describe('verifica caso tenha sales no banco de dados',  () => {
+  const salesMocked = [
+    {
+      saleId: 1,
+      date: "2022-03-31T22:52:56.000Z",
+      productId: 3,
+      quantity: 15
+    },
+  ]
+
+  before(async () => {
+    const mock = [salesMocked, [{}, {}]]
+    sinon.stub(connection, 'execute').resolves(mock);
+  })
+
+  after(async () => {
+    connection.execute.restore();
+  })
+
+  it('retorna um array', async () => {
+    const response = await salesModel.getAllSales();
+    expect(response).to.be.an('array');
+  })
+
+  it('retorna um array não vazio', async () => {
+    const response = await salesModel.getAllSales();
+    expect(response).to.be.not.empty;
+  })
+
+  it('retorna um array com as chaves saleId date,name,quantity', async () => {
+    const response = await salesModel.getAllSales();
+   ;
+    expect(response[0]).to.have.keys('date','saleId', 'productId', 'quantity');
+  })
+})
 
 
 
@@ -124,7 +124,6 @@ describe('verifica comportamentos na rota GET /sales/:id', () => {
 
 })
 
-
 describe('verifica comportamentos na rota POST /sales', () => {
   describe('verifica se adiciona o venda no banco de dados',() => {
     const salesMocked = []
@@ -148,7 +147,6 @@ describe('verifica comportamentos na rota POST /sales', () => {
     })
 
 })
-
 })
 describe('verifica comportamentos na rota PUT /sales/:id', () => {
   describe('verifica se retorna o valor do venda alterado no banco de dados ', async () => {
@@ -179,7 +177,6 @@ describe('verifica comportamentos na rota PUT /sales/:id', () => {
   })
 })
 
-
 describe('verifica o funcionamento da função de cadastrar uma venda', () => {
   describe('verifica se retorna o valor do id da venda que esta sendo cadastrada na rota / POST ', async () => {
     const mockSaleId = 5
@@ -198,14 +195,11 @@ describe('verifica o funcionamento da função de cadastrar uma venda', () => {
       connection.execute.restore();
     });
 
-     it('retorna o id em forma de numero', async () => {
-      const [response] = await salesModel.updateSale(editedsaleMocked);
-      expect([response][0]).to.be.a('number');
+     it('verifica se não retorna nada ', async () => {
+      const response = await salesModel.updateSale(editedsaleMocked);
+      expect(response).to.be.undefined;
     })
  
-    it('retorna o numero correto', async () => {
-      const [response] = await salesModel.updateSale(editedsaleMocked);
-      expect(response[0]).to.deep.equal(mockSaleId);
-    })
   })
-}) */
+})
+

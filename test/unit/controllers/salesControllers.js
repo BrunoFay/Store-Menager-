@@ -4,7 +4,8 @@ const salesService = require('../../../services/salesServices');
 const salesControler = require('../../../controllers/salesControllers');
 
 
-describe('salesControllers', () => {
+/* describe('salesControllers', () => {
+  let response={},request={}, next={};
   describe('verifica o funcionamento da função getAllSales', () => {
     describe('retorna um array com sales', () => {
       const salesMocked = [{
@@ -62,3 +63,4 @@ describe('salesControllers', () => {
     })
   })
 })
+ */

@@ -31,22 +31,58 @@ const createSale = async (newSaleToDb) => {
     'INSERT INTO StoreManager.sales_products (sale_id,product_id,quantity) VALUES (?,?,?);',
     [newSaleToDb.id, newSaleToDb.productId, newSaleToDb.quantity],
   );
+  await connection.execute(
+    'UPDATE StoreManager.products SET quantity=quantity - ? WHERE id = ?;',
+    [newSaleToDb.quantity, newSaleToDb.productId],
+  )
 };
+const updatedProductWhenUpdateSale = async (sales) => {
+  const [quantity] = await connection.execute(
+    'SELECT quantity FROM StoreManager.sales_products WHERE sale_id = ? AND product_id = ?;',
+    [sales.id, sales.productId],
+  )
+  const quantityFormated = quantity[0].quantity
+  await connection.execute(
+    'UPDATE StoreManager.products SET quantity=quantity + ? WHERE id = ?;',
+    [quantityFormated, sales.productId],
+  )
+
+}
 const updateSale = async (sales) => {
   await connection.execute(
     'UPDATE StoreManager.sales_products SET product_id = ?, quantity=? WHERE sale_id = ?;',
     [sales.productId, sales.quantity, sales.id],
   );
+  await connection.execute(
+    'UPDATE StoreManager.products SET quantity=quantity - ? WHERE id = ?;',
+    [sales.quantity, sales.productId],
+  )
 };
 
+const updatedSaleWhenDelete = async (id) => {
+  const [quantityAndProductId] = await connection.execute(
+    'Select quantity,product_id FROM StoreManager.sales_products WHERE sale_id = ?;',
+    [id],
+  )
+  quantityAndProductId.forEach(async ({ quantity, product_id }) => {
+    await connection.execute(
+      'UPDATE StoreManager.products SET quantity=quantity + ? WHERE id = ?;',
+      [quantity, product_id],
+    )
+  })
+
+}
 const deleteSale = async (id) => {
+  updatedSaleWhenDelete(id)
   await connection.execute(
     'DELETE FROM StoreManager.sales WHERE id = ?;',
     [id],
-  ); await connection.execute(
+  );
+  await connection.execute(
     'DELETE FROM StoreManager.sales_products WHERE sale_id = ?;',
     [id],
   );
+
 };
 module.exports = {
   getAllSales,
@@ -55,4 +91,5 @@ module.exports = {
   updateSale,
   createRegisterInTableSales,
   deleteSale,
+  updatedProductWhenUpdateSale
 };

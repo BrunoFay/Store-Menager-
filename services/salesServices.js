@@ -34,12 +34,14 @@ const createSale = async (sales) => {
 
 const updateSale = async (id, sales) => {
   const salesIdValidate = await salesModel.getSalesById(id);
-  sales.forEach(async ({ productId, quantity }) => {
-    await salesModel.updateSale({ productId, quantity, id });
-  });
   if (!salesIdValidate.length) {
     return ({ error: { message: 'Sale not found' }, status: 404 });
   }
+  sales.forEach(async ({ productId, quantity }) => {
+    await salesModel.updatedProductWhenUpdateSale({ id, productId, quantity });
+    await salesModel.updateSale({ productId, quantity, id });
+  });
+
   const updatedSale = { saleId: Number(id), itemUpdated: [...sales] };
   return updatedSale;
 };

@@ -156,7 +156,7 @@ describe('verifica comportamentos na função createSale', () => {
 
 })
 
-describe('verifica comportamentos da função updateSale', () => {
+/* describe('verifica comportamentos da função updateSale', () => {
   describe('verifica se retorna o objeto com os dados do produto editado ', async () => {
     const mockId = 5
     const mockSaleModel = [
@@ -174,11 +174,11 @@ describe('verifica comportamentos da função updateSale', () => {
       }
     ]
 
-    before(async () => {
+    before( () => {
       sinon.stub(salesModel, 'updateSale').resolves(mockSaleModel)
     });
 
-    after(async () => {
+    after( () => {
       salesModel.updateSale.restore();
     });
 
@@ -194,3 +194,4 @@ describe('verifica comportamentos da função updateSale', () => {
 
   })
 })
+ */

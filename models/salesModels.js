@@ -57,7 +57,13 @@ const updateSale = async (sales) => {
     [sales.quantity, sales.productId],
   );
 };
-
+const checkQuantityOfProducts = async (productId) => {
+  const [quantityOfProducts] = await connection.execute(
+    'SELECT quantity FROM StoreManager.products WHERE id = ?;',
+    [productId],
+  );
+  return quantityOfProducts;
+};
 const updatedSaleWhenDelete = async (id) => {
   const [quantityAndProductId] = await connection.execute(
     'Select quantity,product_id FROM StoreManager.sales_products WHERE sale_id = ?;',
@@ -89,4 +95,5 @@ module.exports = {
   createRegisterInTableSales,
   deleteSale,
   updatedProductWhenUpdateSale,
+  checkQuantityOfProducts,
 };

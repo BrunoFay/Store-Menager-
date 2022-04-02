@@ -22,7 +22,6 @@ const createProduct = async (product) => {
   const productInDb = await checkIfProductAlreadyExistsInDb(product.name);
   if (productInDb) return productInDb;
   const newProduct = await productsModel.createProduct(product);
-  console.log(newProduct);
   return newProduct;
 };
 const checkIfProductIdExistInDb = async (id) => {

@@ -112,7 +112,7 @@ describe('verifica comportamentos da função getSalesById', () => {
 
 })
 describe('verifica comportamentos na função createSale', () => {
-  describe('verifica se recebe um objeto ao cadastrar uma nova venda', async () => {
+  describe('verifica se recebe um objeto com erro ao tentar cadastrar uma venta com o valor de produtos nao disponivel', async () => {
     const mockId = 2
     const mockSaleModel = [
       {
@@ -121,9 +121,9 @@ describe('verifica comportamentos na função createSale', () => {
         productId: 1,
         quantity: 3
       }]
+      const mockedMessage = { message: 'Such amount is not permitted to sell' }
     const newSaleMocked = [
       {
-        id: mockId,
         productId: 1,
         quantity: 32
       }
@@ -138,26 +138,55 @@ describe('verifica comportamentos na função createSale', () => {
       salesModel.createSale.restore();
     });
 
-    it('retorna um numero id da função createRegisterInTableSales', async () => {
-      const response = await salesServices.createSale(newSaleMocked);
-      expect(response.id).to.be.a('number');
-    })
+  
     it('retorna um objeto', async () => {
       const response = await salesServices.createSale(newSaleMocked);
       expect(response).to.be.an('object');
     })
 
-    it('retorna um objeto com as chaves id e itemsSold ', async () => {
+    it("retorna um objeto com  a mensagem de erro 'Such amount is not permitted to sell' ", async () => {
       const response = await salesServices.createSale(newSaleMocked);
-      expect(response).to.have.keys(['id', 'itemsSold']);
+      expect(response.error).to.be.deep.equal(mockedMessage);
+    })
+    
+  })
+  
+})
+
+ describe('verifica comportamento da função deleteSale',()=>{
+  describe('verifica se ao passar um id invalido, retorna uma mensagem de erro', () => {
+    const mockId = 3
+    const mock = [
+      {
+        date: "2022-03-31T23:15:49.000Z",
+        productId: 3,
+        quantity: 14
+      }
+    ]
+    const mockedMessage =  { message: 'Sale not found' }
+    before(async () => {
+      sinon.stub(salesModel, 'deleteSale').resolves(mock)
+
+    });
+
+    after(async () => {
+      salesModel.deleteSale.restore();
+    });
+
+    it('retorna um objeto', async () => {
+      const response = await salesServices.deleteSale(mockId);
+      expect(response).to.be.an('object');
+    })
+
+    it("retorna um objeto com  a mensagem de erro 'Sale not found' ", async () => {
+      const response = await salesServices.deleteSale(mockId);
+      expect(response.error).to.be.deep.equal(mockedMessage);
     })
 
   })
-
-})
-
-/* describe('verifica comportamentos da função updateSale', () => {
-  describe('verifica se retorna o objeto com os dados do produto editado ', async () => {
+}) 
+   describe('verifica comportamentos da função updateSale', () => {
+  describe('verifica se retorna o objeto com erro ao passar um id invalido ', async () => {
     const mockId = 5
     const mockSaleModel = [
       {
@@ -173,7 +202,7 @@ describe('verifica comportamentos na função createSale', () => {
         quantity: 6
       }
     ]
-
+    const mockedMessage = { message: 'Sale not found' }
     before( () => {
       sinon.stub(salesModel, 'updateSale').resolves(mockSaleModel)
     });
@@ -187,11 +216,10 @@ describe('verifica comportamentos na função createSale', () => {
       expect(response).to.be.an('object');
     })
 
-    it('retorna um objeto com as chaves saleId e itemUpdated', async () => {
+    it("retorna um objeto com a mensagem 'Sale not found'", async () => {
       const response = await salesServices.updateSale(mockId, editedSaleMocked);
-      expect(response).to.have.keys(['saleId', 'itemUpdated']);
+      expect(response.error).to.be.deep.equal(mockedMessage);
     })
 
   })
-})
- */
+}) 

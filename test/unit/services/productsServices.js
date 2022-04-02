@@ -3,60 +3,60 @@ const { expect } = require('chai');
 const productsModel = require('../../../models/productsModels');
 const productsServices = require('../../../services/productsServices');
 
-/* describe('verifica comportamentos produtos na camada de serviço', () => {
-  describe('verifica caso nao retorne produto na função getAllProducts',  () => {
-    before(async () => {
-      const mock = []
-      sinon.stub(productsModel, 'getAllProducts').resolves(mock)
-    });
 
-    after(() => productsModel.getAllProducts.restore());
+describe('verifica caso nao retorne produto na função getAllProducts', () => {
+  before(async () => {
+    const mock = []
+    sinon.stub(productsModel, 'getAllProducts').resolves(mock)
+  });
 
-    it('retorna um array', async () => {
-      const response = await productsServices.getAllProducts();
-      expect(response).to.be.an('array');
-    })
+  after(() => productsModel.getAllProducts.restore());
 
-    it('retorna um array vazio', async () => {
-      const response = await productsServices.getAllProducts();
-      expect(response).to.be.empty;
-    })
+  it('retorna um array', async () => {
+    const response = await productsServices.getAllProducts();
+    expect(response).to.be.an('array');
   })
 
-  describe('verifica caso tenha produtos no banco de dados',  () => {
-    const mock = [{
-      id: 1,
-      name: "Martelo de Thor",
-      quantity: 10
-    }]
-
-    before(async () => {
-      sinon.stub(productsModel, 'getAllProducts').resolves(mock);
-    })
-
-    after(async () => {
-      productsModel.getAllProducts.restore();
-    })
-
-    it('retorna um array', async () => {
-      const response = await productsServices.getAllProducts();
-      expect(response).to.be.an('array');
-    })
-
-    it('retorna um array não vazio', async () => {
-      const response = await productsServices.getAllProducts();
-      expect(response).to.be.not.empty;
-    })
-
-    it('retorna um array com as chaves id,name,quantity', async () => {
-      const [response] = await productsServices.getAllProducts();
-      expect(response).to.have.keys(['id', 'name', 'quantity']);
-    })
+  it('retorna um array vazio', async () => {
+    const response = await productsServices.getAllProducts();
+    expect(response).to.be.empty;
   })
 })
 
+describe('verifica caso tenha produtos no banco de dados', () => {
+  const mock = [{
+    id: 1,
+    name: "Martelo de Thor",
+    quantity: 10
+  }]
+
+  before(async () => {
+    sinon.stub(productsModel, 'getAllProducts').resolves(mock);
+  })
+
+  after(async () => {
+    productsModel.getAllProducts.restore();
+  })
+
+  it('retorna um array', async () => {
+    const response = await productsServices.getAllProducts();
+    expect(response).to.be.an('array');
+  })
+
+  it('retorna um array não vazio', async () => {
+    const response = await productsServices.getAllProducts();
+    expect(response).to.be.not.empty;
+  })
+
+  it('retorna um array com as chaves id,name,quantity', async () => {
+    const [response] = await productsServices.getAllProducts();
+    expect(response).to.have.keys(['id', 'name', 'quantity']);
+  })
+})
+
+
 describe('verifica comportamentos da função getProductsById', () => {
-  describe('verifica se ao passar um id valido,não retorna um array vazio',  () => {
+  describe('verifica se ao passar um id valido, retorna um objeto com as informações', () => {
     const mockId = 12
     const productsDbMocked = [{
       id: 12,
@@ -71,27 +71,27 @@ describe('verifica comportamentos da função getProductsById', () => {
       productsModel.getProductsById.restore();
     });
 
-    it('retorna um array', async () => {
+    it('retorna um objeto', async () => {
       const response = await productsServices.getProductsById(mockId);
-      expect(response).to.be.an('array');
+
+      expect(response).to.be.an('object');
     })
 
-    it('retorna um array não vazio', async () => {
+    it('retorna um objeto não vazio', async () => {
       const response = await productsServices.getProductsById(mockId);
       expect(response).to.be.not.empty;
     })
 
-    it('retorna um array com um objeto dentro contendo as chaves id ,name ,quantity', async () => {
+    it('retorna um objeto as chaves id ,name ,quantity', async () => {
       const response = await productsServices.getProductsById(mockId);
-      expect(response[0]).to.have.keys(['id', 'name', 'quantity']);
+      expect(response).to.have.keys(['id', 'name', 'quantity']);
     })
   })
 
-  describe("verifica caso o id passado nao exista, receba a mensagem 'Product not found'",  () => {
+  describe("verifica caso o id passado nao exista, receba a mensagem 'Product not found'", () => {
     const mockId = 2
-    const messageResponseMocked = Error('Product not found')
+    const messageResponseMocked = { error: { message: 'Product not found' }, status: 404 }
     before(async () => {
-      next = sinon.stub()
       sinon.stub(productsModel, 'getProductsById').resolves(messageResponseMocked);
     })
 
@@ -99,9 +99,9 @@ describe('verifica comportamentos da função getProductsById', () => {
       productsModel.getProductsById.restore();
     })
 
-    it('retorna uma mensagem de erro', async () => {
-      await productsServices.getProductsById(mockId);
-      expect(next.calledWith(sinon.match(messageResponseMocked))).to.be.equal(true);
+    it('retorna objeto contendo uma mensagem de erro e o seu status', async () => {
+      const response = await productsServices.getProductsById(mockId);
+      expect(response).to.be.deep.equal(messageResponseMocked);
     })
   })
 
@@ -110,56 +110,32 @@ describe('verifica comportamentos da função getProductsById', () => {
 
 describe('verifica comportamentos da função checkIfProductAlreadyExistsInDb', () => {
   const mockName = "Martelo de Thor";
-  describe('verifica se retorna uma mensagem de erro se o nome ja existir banco de dados',  () => {
-    const messageResponseMocked = Error('Product already exists');
+  describe('verifica se retorna uma mensagem de erro se o nome ja existir banco de dados', () => {
+    const messageResponseMocked = { error: { message: 'Product already exists' }, status: 409 };
+    const productsDbMocked = [{
+      name: 'test',
+      quantity: 11
+    }]
     before(async () => {
       next = sinon.stub()
-      sinon.stub(productsModel, 'getProductsByName').resolves(messageResponseMocked)
+      sinon.stub(productsModel, 'getProductsByName').resolves(productsDbMocked)
     });
 
     after(async () => {
       productsModel.getProductsByName.restore();
     });
 
-  
+
     it('retorna uma mensagem de erro', async () => {
-       await productsServices.checkIfProductAlreadyExistsInDb(mockName);
-       expect(next.calledWith(sinon.match(messageResponseMocked))).to.be.equal(true);
+      const response = await productsServices.checkIfProductAlreadyExistsInDb(mockName);
+
+      expect(response).to.be.deep.equal(messageResponseMocked);
     })
   })
 })
 
-
-describe('verifica comportamentos na função createProduct', () => {
-  describe('verifica se recebe uma mensagem de erro ao tentar cadastrar um nome ja existente',  () => {
-    const messageResponseMocked = Error('Product already exists');
-
-    const newProductMocked = {
-      name: "Martelo de Thor",
-      quantity: 10
-    }
-    before(async () => {
-      next = sinon.stub()
-
-      sinon.stub(productsModel, 'createProduct').resolves(messageResponseMocked)
-    });
-
-    after(async () => {
-      productsModel.createProduct.restore();
-    });
-
-    it('retorna um objeto', async () => {
-      const response = await productsServices.createProduct(newProductMocked);
-      expect(response).to.be.an('object');
-    })
-
-    it('retorna um objeto com uma mensagem de erro', async () => {
-       await productsServices.createProduct(newProductMocked);
-       expect(next.calledWith(sinon.match(messageResponseMocked))).to.be.equal(true);
-    })
-  })
-
-  describe('verifica se recebe um objeto ao cadastrar um novo produto',  () => {
+/* describe('verifica comportamentos na função createProduct', () => {
+  describe('verifica se recebe um objeto ao cadastrar um novo produto', () => {
 
     const productsDbMocked = {
       id: 12,
@@ -172,7 +148,6 @@ describe('verifica comportamentos na função createProduct', () => {
       quantity: 10
     }
     before(async () => {
-      productsDbMocked
       sinon.stub(productsModel, 'createProduct').resolves(productsDbMocked)
     });
 
@@ -189,17 +164,15 @@ describe('verifica comportamentos na função createProduct', () => {
       const response = await productsServices.createProduct(newProductMocked);
       expect(response).to.have.keys(['id', 'name', 'quantity']);
     })
-    
-  })
-})
 
+  })
+}) */
 
 describe('verifica comportamentos da função checkIfProductIdExistInDb', () => {
-  describe('verifica se retorna a mensagem de erro corretamente caso nao haja o id passado como parametro ',  () => {
+  describe('verifica se retorna a mensagem de erro corretamente caso nao haja o id passado como parametro ', () => {
     const mockId = 55
-    const messageResponseMocked = Error('Product not found');
+    const messageResponseMocked = { error: { message: 'Product not found' }, status: 404 };
     before(async () => {
-      next = sinon.stub()
       sinon.stub(productsModel, 'getProductsById').resolves(messageResponseMocked)
     });
 
@@ -208,26 +181,26 @@ describe('verifica comportamentos da função checkIfProductIdExistInDb', () => 
     });
 
     it('retorna uma mensagem de erro caso o id nao exista', async () => {
-     await productsServices.checkIfProductIdExistInDb(mockId);
-     expect(next.calledWith(sinon.match(messageResponseMocked))).to.be.equal(true); 
+      const response = await productsServices.checkIfProductIdExistInDb(mockId);
+
+      expect(response).to.be.deep.equal(messageResponseMocked);
     })
 
   })
 })
+/* describe('verifica comportamentos da função updateProduct', () => {
+  const productsDbMocked = {
+    id: 1,
+    name: "Martelo",
+    quantity: 1000
+  }
+  const editedProductMocked = {
+    name: "Martelo de Thor",
+    quantity: 10
+  }
+  describe('verifica se retorna o objeto com os dados do produto editado ', () => {
+    const mockId = 1
 
-describe('verifica comportamentos da função updateProduct', () => {
-  describe('verifica se retorna o objeto com os dados do produto editado ',  () => {
-    const mockId = 5
-    const productsDbMocked = {
-      id: 5,
-      name: "Martelo",
-      quantity: 1000
-    }
-
-    const editedProductMocked = {
-      name: "Martelo de Thor",
-      quantity: 10
-    }
     before(async () => {
       sinon.stub(productsModel, 'updateProduct').resolves(productsDbMocked)
     });
@@ -243,15 +216,14 @@ describe('verifica comportamentos da função updateProduct', () => {
 
     it('retorna um objeto com as chaves id,name,quantity', async () => {
       const response = await productsServices.updateProduct(editedProductMocked, mockId);
-      expect(response).to.have.keys(['id', 'name', 'quantity']);
+      expect(response).to.have.keys('id', 'name', 'quantity');
     })
   })
 
   describe('verifica se retorna a mensagem de erro ao passar um id que nao existe', () => {
     const mockId = 4
-    const messageResponseMocked = Error('Product not found');
+    const messageResponseMocked = { error: { message: 'Product not found' }, status: 404 };
     before(async () => {
-      next = sinon.stub()
       sinon.stub(productsModel, 'updateProduct').resolves(productsDbMocked)
     });
 
@@ -260,16 +232,20 @@ describe('verifica comportamentos da função updateProduct', () => {
     });
 
     it('retorna uma mensagem de erro caso o id nao exista', async () => {
-       await productsServices.updateProduct(mockId);
-      expect(next.calledWith(sinon.match(messageResponseMocked))).to.be.equal(true);
+      const response = await productsServices.updateProduct(editedProductMocked, mockId);
+      expect(response).to.be.deep.equal(messageResponseMocked);
     })
   })
-})
-
-describe('verifica comportamentos na rota DELETE /products/:id', () => {
+}) */
+/* describe('verifica comportamentos na rota DELETE /products/:id', () => {
+  const productsDbMocked = {
+    id: 1,
+    name: "Martelo",
+    quantity: 1000
+  }
   describe('verifica se retorna a mensagem de erro caso nao exista o id passado como parametro ', async () => {
     const mockId = 55
-    const messageResponseMocked = Error('Product not found');
+    const messageResponseMocked = { error: { message: 'Product not found' }, status: 404 };
 
     before(async () => {
       next = sinon.stub()
@@ -281,8 +257,9 @@ describe('verifica comportamentos na rota DELETE /products/:id', () => {
     });
 
     it("retorna o objeto com a mensagem 'Product not found'", async () => {
-      await productsServices.removeProduct(mockId);
-      expect(next.calledWith(sinon.match(messageResponseMocked))).to.be.equal(true);
+      const response = await productsServices.removeProduct(mockId);
+      console.log(response);
+      expect(response).to.be.deep.equal(messageResponseMocked);
     })
   })
 }) */

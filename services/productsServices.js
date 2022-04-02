@@ -48,4 +48,6 @@ module.exports = {
   createProduct,
   updateProduct,
   removeProduct,
+  checkIfProductAlreadyExistsInDb,
+  checkIfProductIdExistInDb,
 };

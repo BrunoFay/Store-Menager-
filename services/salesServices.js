@@ -3,10 +3,10 @@ const salesModel = require('../models/salesModels');
 const getAllSales = async () => {
   const sales = await salesModel.getAllSales();
   const salesFormated = sales.map((sale) => ({
-      saleId: sale.sale_id,
-      date: sale.date,
-      productId: sale.product_id,
-      quantity: sale.quantity,
+    saleId: sale.sale_id,
+    date: sale.date,
+    productId: sale.product_id,
+    quantity: sale.quantity,
   }));
   return salesFormated;
 };
@@ -16,7 +16,7 @@ const getSalesById = async (id) => {
     date: sale.date,
     productId: sale.product_id,
     quantity: sale.quantity,
-}));
+  }));
   if (!sales.length) {
     return ({ error: { message: 'Sale not found' }, status: 404 });
   }
@@ -33,16 +33,29 @@ const createSale = async (sales) => {
 };
 
 const updateSale = async (id, sales) => {
+  const salesIdValidate = await salesModel.getSalesById(id);
   sales.forEach(async ({ productId, quantity }) => {
     await salesModel.updateSale({ productId, quantity, id });
   });
+  if (!salesIdValidate.length) {
+    return ({ error: { message: 'Sale not found' }, status: 404 });
+  }
   const updatedSale = { saleId: Number(id), itemUpdated: [...sales] };
   return updatedSale;
 };
+const deleteSale = async (id) => {
+  const salesIdValidate = await salesModel.getSalesById(id);
+  if (!salesIdValidate.length) {
+    return ({ error: { message: 'Sale not found' }, status: 404 });
+  }
+  await salesModel.deleteSale(id);
+  return ({ status: 204 });
+}
 
 module.exports = {
   getAllSales,
   getSalesById,
   createSale,
   updateSale,
+  deleteSale
 };

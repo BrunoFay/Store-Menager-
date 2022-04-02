@@ -35,14 +35,25 @@ const createSale = async (newSaleToDb) => {
 const updateSale = async (sales) => {
   await connection.execute(
     'UPDATE StoreManager.sales_products SET product_id = ?, quantity=? WHERE sale_id = ?;',
-     [sales.productId, sales.quantity, sales.id],
+    [sales.productId, sales.quantity, sales.id],
   );
- };
+};
 
+const deleteSale = async (id) => {
+  await connection.execute(
+    'DELETE FROM StoreManager.sales WHERE id = ?;',
+    [id],
+  ); await connection.execute(
+    'DELETE FROM StoreManager.sales_products WHERE sale_id = ?;',
+    [id],
+  );
+
+}
 module.exports = {
   getAllSales,
   getSalesById,
   createSale,
   updateSale,
   createRegisterInTableSales,
+  deleteSale,
 };

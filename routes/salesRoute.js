@@ -9,5 +9,5 @@ saleRouter.post('/', validateSalesMiddleware, salesController.createSale);
 
 saleRouter.get('/:id', salesController.getSalesById);
 saleRouter.put('/:id', validateSalesMiddleware, salesController.updateSale);
-
+saleRouter.delete('/:id', salesController.deleteSale);
 module.exports = saleRouter;

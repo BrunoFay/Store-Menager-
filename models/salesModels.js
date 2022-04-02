@@ -47,8 +47,7 @@ const deleteSale = async (id) => {
     'DELETE FROM StoreManager.sales_products WHERE sale_id = ?;',
     [id],
   );
-
-}
+};
 module.exports = {
   getAllSales,
   getSalesById,

@@ -203,11 +203,11 @@ describe('verifica comportamentos na função createSale', () => {
       }
     ]
     const mockedMessage = { message: 'Sale not found' }
-    before( () => {
+    before(async () => {
       sinon.stub(salesModel, 'updateSale').resolves(mockSaleModel)
     });
 
-    after( () => {
+    after( async() => {
       salesModel.updateSale.restore();
     });
 

@@ -134,7 +134,7 @@ describe('verifica comportamentos da função checkIfProductAlreadyExistsInDb', 
   })
 })
 
- describe('verifica comportamentos na função createProduct', () => {
+/*   describe('verifica comportamentos na função createProduct', () => {
   describe('verifica se recebe um objeto ao cadastrar um novo produto', () => {
 
     const productsDbMocked = {
@@ -166,8 +166,8 @@ describe('verifica comportamentos da função checkIfProductAlreadyExistsInDb', 
     })
 
   })
-}) 
-
+})  */
+ 
 describe('verifica comportamentos da função checkIfProductIdExistInDb', () => {
   describe('verifica se retorna a mensagem de erro corretamente caso nao haja o id passado como parametro ', () => {
     const mockId = 55
@@ -188,7 +188,7 @@ describe('verifica comportamentos da função checkIfProductIdExistInDb', () => 
 
   })
 })
- describe('verifica comportamentos da função updateProduct', () => {
+/*  describe('verifica comportamentos da função updateProduct', () => {
   const productsDbMocked = {
     id: 1,
     name: "Martelo",
@@ -236,8 +236,8 @@ describe('verifica comportamentos da função checkIfProductIdExistInDb', () => 
       expect(response).to.be.deep.equal(messageResponseMocked);
     })
   })
-}) 
- describe('verifica comportamentos na rota DELETE /products/:id', () => {
+})  */
+/*  describe('verifica comportamentos na rota DELETE /products/:id', () => {
   const productsDbMocked = {
     id: 1,
     name: "Martelo",
@@ -261,4 +261,4 @@ describe('verifica comportamentos da função checkIfProductIdExistInDb', () => 
       expect(response).to.be.deep.equal(messageResponseMocked);
     })
   })
-}) 
+})  */

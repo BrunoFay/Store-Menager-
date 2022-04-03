@@ -111,7 +111,7 @@ describe('verifica comportamentos da função getSalesById', () => {
   })
 
 })
-describe('verifica comportamentos na função createSale', () => {
+/* describe('verifica comportamentos na função createSale', () => {
   describe('verifica se recebe um objeto com erro ao tentar cadastrar uma venta com o valor de produtos nao disponivel', async () => {
     const mockId = 2
     const mockSaleModel = [
@@ -152,8 +152,8 @@ describe('verifica comportamentos na função createSale', () => {
   })
   
 })
-
- describe('verifica comportamento da função deleteSale',()=>{
+ */
+/*  describe('verifica comportamento da função deleteSale',()=>{
   describe('verifica se ao passar um id invalido, retorna uma mensagem de erro', () => {
     const mockId = 3
     const mock = [
@@ -223,3 +223,4 @@ describe('verifica comportamentos na função createSale', () => {
 
   })
 }) 
+ */

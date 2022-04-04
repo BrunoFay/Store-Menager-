@@ -111,16 +111,9 @@ describe('verifica comportamentos da função getSalesById', () => {
   })
 
 })
-/* describe('verifica comportamentos na função createSale', () => {
+/*  describe.only('verifica comportamentos na função createSale', () => {
   describe('verifica se recebe um objeto com erro ao tentar cadastrar uma venta com o valor de produtos nao disponivel', async () => {
     const mockId = 2
-    const mockSaleModel = [
-      {
-        saleId: 1,
-        date: "2022-03-31T22:52:56.000Z",
-        productId: 1,
-        quantity: 3
-      }]
       const mockedMessage = { message: 'Such amount is not permitted to sell' }
     const newSaleMocked = [
       {
@@ -130,17 +123,21 @@ describe('verifica comportamentos da função getSalesById', () => {
     ]
     before(async () => {
       sinon.stub(salesModel, 'createRegisterInTableSales').resolves(mockId);
-      sinon.stub(salesModel, 'createSale').resolves(mockSaleModel)
+      sinon.stub(salesModel, 'checkQuantityOfProducts').resolves([]);
+      sinon.stub(salesModel, 'createSale').resolves([])
     });
 
     after(async () => {
       salesModel.createRegisterInTableSales.restore();
+      salesModel.checkQuantityOfProducts.restore();
       salesModel.createSale.restore();
+
     });
 
   
     it('retorna um objeto', async () => {
       const response = await salesServices.createSale(newSaleMocked);
+      console.log(response);
       expect(response).to.be.an('object');
     })
 
@@ -152,8 +149,8 @@ describe('verifica comportamentos da função getSalesById', () => {
   })
   
 })
- */
-/*  describe('verifica comportamento da função deleteSale',()=>{
+  */
+  describe('verifica comportamento da função deleteSale',()=>{
   describe('verifica se ao passar um id invalido, retorna uma mensagem de erro', () => {
     const mockId = 3
     const mock = [
@@ -166,11 +163,14 @@ describe('verifica comportamentos da função getSalesById', () => {
     const mockedMessage =  { message: 'Sale not found' }
     before(async () => {
       sinon.stub(salesModel, 'deleteSale').resolves(mock)
+      sinon.stub(salesModel,'getSalesById').resolves([])
 
     });
 
     after(async () => {
       salesModel.deleteSale.restore();
+      salesModel.getSalesById.restore();
+
     });
 
     it('retorna um objeto', async () => {
@@ -205,10 +205,14 @@ describe('verifica comportamentos da função getSalesById', () => {
     const mockedMessage = { message: 'Sale not found' }
     before(async () => {
       sinon.stub(salesModel, 'updateSale').resolves(mockSaleModel)
+      sinon.stub(salesModel,'getSalesById').resolves([])
+
     });
 
     after( async() => {
       salesModel.updateSale.restore();
+      salesModel.getSalesById.restore();
+
     });
 
     it('retorna um objeto', async () => {
@@ -223,4 +227,4 @@ describe('verifica comportamentos da função getSalesById', () => {
 
   })
 }) 
- */
+ 

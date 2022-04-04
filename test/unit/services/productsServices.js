@@ -22,7 +22,6 @@ describe('verifica caso nao retorne produto na função getAllProducts', () => {
     expect(response).to.be.empty;
   })
 })
-
 describe('verifica caso tenha produtos no banco de dados', () => {
   const mock = [{
     id: 1,
@@ -53,6 +52,7 @@ describe('verifica caso tenha produtos no banco de dados', () => {
     expect(response).to.have.keys(['id', 'name', 'quantity']);
   })
 })
+
 
 
 describe('verifica comportamentos da função getProductsById', () => {
@@ -134,25 +134,27 @@ describe('verifica comportamentos da função checkIfProductAlreadyExistsInDb', 
   })
 })
 
-/*   describe('verifica comportamentos na função createProduct', () => {
+   describe('verifica comportamentos na função createProduct', () => {
   describe('verifica se recebe um objeto ao cadastrar um novo produto', () => {
 
     const productsDbMocked = {
-      id: 12,
-      name: "Martelo de Thor",
+      id: 1,
+      name: "produto",
       quantity: 10
     }
 
     const newProductMocked = {
-      name: "qualquer de Thor",
+      name: "produto",
       quantity: 10
     }
     before(async () => {
       sinon.stub(productsModel, 'createProduct').resolves(productsDbMocked)
+      sinon.stub(productsModel,'getProductsByName').resolves([])
     });
 
     after(async () => {
       productsModel.createProduct.restore();
+      productsModel.getProductsByName.restore()
     });
 
     it('retorna um objeto', async () => {
@@ -166,7 +168,7 @@ describe('verifica comportamentos da função checkIfProductAlreadyExistsInDb', 
     })
 
   })
-})  */
+})  
  
 describe('verifica comportamentos da função checkIfProductIdExistInDb', () => {
   describe('verifica se retorna a mensagem de erro corretamente caso nao haja o id passado como parametro ', () => {
@@ -188,7 +190,8 @@ describe('verifica comportamentos da função checkIfProductIdExistInDb', () => 
 
   })
 })
-/*  describe('verifica comportamentos da função updateProduct', () => {
+
+  describe('verifica comportamentos da função updateProduct', () => {
   const productsDbMocked = {
     id: 1,
     name: "Martelo",
@@ -203,10 +206,12 @@ describe('verifica comportamentos da função checkIfProductIdExistInDb', () => 
 
     before(async () => {
       sinon.stub(productsModel, 'updateProduct').resolves(productsDbMocked)
+      sinon.stub(productsModel,'getProductsById').resolves([productsDbMocked])
     });
 
     after(async () => {
       productsModel.updateProduct.restore();
+      productsModel.getProductsById.restore();
     });
 
     it('retorna um objeto', async () => {
@@ -224,11 +229,14 @@ describe('verifica comportamentos da função checkIfProductIdExistInDb', () => 
     const mockId = 4
     const messageResponseMocked = { error: { message: 'Product not found' }, status: 404 };
     before(async () => {
+      sinon.stub(productsModel,'getProductsById').resolves([])
       sinon.stub(productsModel, 'updateProduct').resolves(productsDbMocked)
     });
 
     after(async () => {
       productsModel.updateProduct.restore();
+      productsModel.getProductsById.restore();
+
     });
 
     it('retorna uma mensagem de erro caso o id nao exista', async () => {
@@ -236,8 +244,9 @@ describe('verifica comportamentos da função checkIfProductIdExistInDb', () => 
       expect(response).to.be.deep.equal(messageResponseMocked);
     })
   })
-})  */
-/*  describe('verifica comportamentos na rota DELETE /products/:id', () => {
+})  
+
+  describe('verifica comportamentos na rota DELETE /products/:id', () => {
   const productsDbMocked = {
     id: 1,
     name: "Martelo",
@@ -250,10 +259,14 @@ describe('verifica comportamentos da função checkIfProductIdExistInDb', () => 
     before(async () => {
       next = sinon.stub()
       sinon.stub(productsModel, 'removeProduct').resolves(productsDbMocked)
+      sinon.stub(productsModel,'getProductsById').resolves([])
+
     });
 
     after(async () => {
       productsModel.removeProduct.restore();
+      productsModel.getProductsById.restore();
+
     });
 
     it("retorna o objeto com a mensagem 'Product not found'", async () => {
@@ -261,4 +274,4 @@ describe('verifica comportamentos da função checkIfProductIdExistInDb', () => 
       expect(response).to.be.deep.equal(messageResponseMocked);
     })
   })
-})  */
+})  

@@ -24,16 +24,17 @@ const getSalesById = async (id) => {
 };
 /* referencia para fazer o forEach https://github.com/tryber/sd-016-b-store-manager/pull/63/commits/ff331aaf7047905862871cbd6b0a1cdb6f5550cb */
 const createSale = async (sales) => {
-  let quantityOfProducts;
   const saleId = await salesModel.createRegisterInTableSales();
-
-  const [checkIfErrorExist] = sales.map(async ({ productId, quantity }) => {
-    const quantityProductsValidate = await salesModel.checkQuantityOfProducts(productId);
-    quantityOfProducts = await quantityProductsValidate[0].quantity;
-    if (quantityOfProducts < quantity) return true;
+  const checkError = sales.map(async ({ productId, quantity }) => {
+    const [quantityProductsValidate] = await salesModel.checkQuantityOfProducts(productId);
+    if (quantityProductsValidate.quantity < quantity) {
+      return 'error';
+    }
     await salesModel.createSale({ id: saleId, productId, quantity });
   });
-  if (await checkIfErrorExist) {
+  const [checkIfErrorExist] = await Promise.all(checkError);
+
+  if (checkIfErrorExist) {
     return ({ error: { message: 'Such amount is not permitted to sell' }, status: 422 });
   }
   const newSale = { id: saleId, itemsSold: [...sales] };

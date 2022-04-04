@@ -137,7 +137,6 @@ describe('verifica comportamentos da função getSalesById', () => {
   
     it('retorna um objeto', async () => {
       const response = await salesServices.createSale(newSaleMocked);
-      console.log(response);
       expect(response).to.be.an('object');
     })
 
